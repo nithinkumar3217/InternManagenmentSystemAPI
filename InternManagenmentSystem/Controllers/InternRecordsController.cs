@@ -14,6 +14,7 @@ namespace InternManagementSystem.Controllers
     [ApiController]
     public class InternRecordsController : ControllerBase
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly InternDbContext internDbContext;
 
         public InternRecordsController(InternDbContext internDbContext)
@@ -26,6 +27,7 @@ namespace InternManagementSystem.Controllers
         public async Task<IActionResult> GetInternRecord()
         {
             var InternRecord = await internDbContext.InternRecord.ToListAsync();
+            log.Info("All intern Records Displayed Successfully");
             return Ok(InternRecord);
         }
 
@@ -50,6 +52,7 @@ namespace InternManagementSystem.Controllers
 
             await internDbContext.InternRecord.AddAsync(internRecord);
             await internDbContext.SaveChangesAsync();
+            log.Info("Intern Posted Successfully");
             return CreatedAtAction("GetInternRecord", new { id = internRecord.InternId }, internRecord);
         }
 
@@ -68,7 +71,7 @@ namespace InternManagementSystem.Controllers
                     internRecord.Email = UpdateInternRecord.Email;
                     internRecord.Adress = UpdateInternRecord.Adress;
                     await internDbContext.SaveChangesAsync();
-
+                    log.Info("Intern Record Updated Successfully");
                     return Ok("Intern Details Updated with InternId: " + InternId);
                 }
                 return NotFound("Intern Details Not Found with InternId: " + InternId);
@@ -92,7 +95,7 @@ namespace InternManagementSystem.Controllers
                 {
                     internDbContext.InternRecord.Remove(internRecord);
                     await internDbContext.SaveChangesAsync();
-
+                    log.Info("Intern Record Deleted Successfully");
                     return Ok("Intern Record Deleted With Intern id" + InternId);
                 }
 
