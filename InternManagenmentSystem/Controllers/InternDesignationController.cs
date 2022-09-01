@@ -14,6 +14,7 @@ namespace InternManagementSystem.Controllers
     [ApiController]
     public class InternDesignationController : ControllerBase
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly InternDbContext internDbContext;
 
         public InternDesignationController(InternDbContext internDbContext)
@@ -26,6 +27,7 @@ namespace InternManagementSystem.Controllers
         public async Task<ActionResult<IEnumerable<InternDesignation>>> GetInternDesignation()
         {
             var designations = await internDbContext.InternDesignation.ToListAsync();
+            log.Info("Intern designation Details Displayed Successfully");
             return Ok(designations);
         }
 
@@ -40,6 +42,7 @@ namespace InternManagementSystem.Controllers
 
                 if (internDesignation != null)
                 {
+                    log.Info("Intern Designation Details By id Displayed successfully");
                     return internDesignation;
                 }
                 else
@@ -62,7 +65,7 @@ namespace InternManagementSystem.Controllers
         {
             internDbContext.InternDesignation.Add(internDesignation);
             await internDbContext.SaveChangesAsync();
-
+            log.Info("Intern Designation Details Posted Successfully");
             return CreatedAtAction("GetInternDesignation", new { id = internDesignation.SNo }, internDesignation);
         }
 
@@ -79,7 +82,7 @@ namespace InternManagementSystem.Controllers
                     updatedesignation.DesignationName = UpdateInternDesignation.DesignationName;
                     updatedesignation.DepartMent = UpdateInternDesignation.DepartMent;
                     await internDbContext.SaveChangesAsync();
-
+                    log.Info("Intern Designation Details Updated Successfully");
                     return Ok("Intern Designation Details Updated with id: " + id);
                 }
                 return NotFound("Intern Designation Details Not Found with id: " + id);
@@ -104,7 +107,7 @@ namespace InternManagementSystem.Controllers
                 {
                     internDbContext.InternDesignation.Remove(internDesignation);
                     await internDbContext.SaveChangesAsync();
-
+                    log.Info("InternDesignation Details By id Deleted Successfully ");
                     return Ok("Designation Details Deleted with DesignationId:" + id);
                 }
 

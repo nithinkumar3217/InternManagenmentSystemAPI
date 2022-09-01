@@ -14,6 +14,7 @@ namespace InternManagenmentSystem.Controllers
     [ApiController]
     public class LoginsController : ControllerBase
     {
+
         private readonly InternDbContext internDbContext;
 
         public LoginsController(InternDbContext internDbContext)
@@ -29,9 +30,8 @@ namespace InternManagenmentSystem.Controllers
         }
 
 
-        // PUT: api/Logins/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // Update Login Details
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLogin(int id, Login login)
         {
@@ -64,12 +64,12 @@ namespace InternManagenmentSystem.Controllers
         // POST: api/Logins
        
         [HttpPost]
-        public async Task<ActionResult<Login>> PostLogin(Login login)
+        public async Task<ActionResult<Login>> PostLogin(Login PostLogin)
         {
-            internDbContext.Logins.Add(login);
+            internDbContext.Logins.Add(PostLogin);
             await internDbContext.SaveChangesAsync();
 
-            return CreatedAtAction("GetLogin", new { id = login.SNo }, login);
+            return CreatedAtAction("GetLogin", new { id = PostLogin.SNo }, PostLogin);
         }
 
         // DELETE: api/Logins/5

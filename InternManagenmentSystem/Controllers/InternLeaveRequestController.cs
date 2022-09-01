@@ -14,6 +14,7 @@ namespace InternManagementSystem.Controllers
     [ApiController]
     public class InternLeaveRequestController : ControllerBase
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly InternDbContext internDbContext;
 
         public InternLeaveRequestController(InternDbContext internDbContext)
@@ -26,6 +27,7 @@ namespace InternManagementSystem.Controllers
         public async Task<ActionResult<IEnumerable<InternLeaveRequest>>> GetInternLeaveRequest()
         {
             var leaveRequests = await internDbContext.InternLeaveRequest.ToListAsync();
+            log.Info("Intern LeaveRequest Details Displayed Successfully");
             return Ok(leaveRequests);
         }
 
@@ -37,10 +39,11 @@ namespace InternManagementSystem.Controllers
 
             if (internLeaveRequest != null)
             {
+                log.Info("Intern LeaveRequest Details By id Displayed Successfully ");
                 return internLeaveRequest;
             }
 
-            return NotFound("Intern Leave Request Details Not Found With id" + id);
+            return NotFound("Intern Leave Request Details Not Found With id: " + id);
         }
 
         // Post a Leave Request
@@ -52,7 +55,7 @@ namespace InternManagementSystem.Controllers
             {
                 internDbContext.InternLeaveRequest.Add(internLeaveRequest);
                 await internDbContext.SaveChangesAsync();
-
+                log.Info("Intern Leaverequest Details Posted Successfully");
                 return CreatedAtAction("GetInternLeaveRequest", new { id = internLeaveRequest.SNo }, internLeaveRequest);
             }
             catch (Exception)
@@ -75,7 +78,7 @@ namespace InternManagementSystem.Controllers
                     leaveRequest.LeaveReason = UpdateInternLeaveRequest.LeaveReason;
                     leaveRequest.LeaveType = UpdateInternLeaveRequest.LeaveType;
                     await internDbContext.SaveChangesAsync();
-
+                    log.Info("Intern LeaveRequest Details By id Updated Successfully");
                     return Ok("Intern LeaveRequest Updated with id: " + id);
                 }
                 return NotFound("Intern LeaveRequest Details Not Found with id: " + id);
@@ -98,8 +101,8 @@ namespace InternManagementSystem.Controllers
                 {
                     internDbContext.InternLeaveRequest.Remove(internLeaveRequest);
                     await internDbContext.SaveChangesAsync();
-
-                    return Ok("Intern Leave Request Deleted With Id:" + id);
+                    log.Info("Intern LeaveRequest Details By id Deleted Successfully");
+                    return Ok("Intern Leave Request Deleted With Id: " + id);
                 }
             }
             catch (Exception)
@@ -107,8 +110,8 @@ namespace InternManagementSystem.Controllers
 
                 throw;
             }
-
-            return NotFound("Intern Leave Request Details Not Found With Id:" + id);
+            log.Info("Intern LeaveRequest Details By id Not Deleted Successfully");
+            return NotFound("Intern Leave Request Details Not Found With Id: " + id);
         }
     }
 }

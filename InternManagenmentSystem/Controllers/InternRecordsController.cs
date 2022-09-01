@@ -39,6 +39,7 @@ namespace InternManagementSystem.Controllers
 
             if (internRecord != null)
             {
+                log.Info("intern Record By id Displayed Successfully");
                 return internRecord;
             }
 
@@ -71,7 +72,7 @@ namespace InternManagementSystem.Controllers
                     internRecord.Email = UpdateInternRecord.Email;
                     internRecord.Adress = UpdateInternRecord.Adress;
                     await internDbContext.SaveChangesAsync();
-                    log.Info("Intern Record Updated Successfully");
+                    log.Info("Intern Record By InternId Updated Successfully");
                     return Ok("Intern Details Updated with InternId: " + InternId);
                 }
                 return NotFound("Intern Details Not Found with InternId: " + InternId);
@@ -95,8 +96,8 @@ namespace InternManagementSystem.Controllers
                 {
                     internDbContext.InternRecord.Remove(internRecord);
                     await internDbContext.SaveChangesAsync();
-                    log.Info("Intern Record Deleted Successfully");
-                    return Ok("Intern Record Deleted With Intern id" + InternId);
+                    log.Info("Intern Record By InternId Deleted Successfully");
+                    return Ok("Intern Record Deleted With Intern id: " + InternId);
                 }
 
                 return NotFound("InternRecord Not Found With InternId: " + InternId);

@@ -14,6 +14,7 @@ namespace InternManagementSystem.Controllers
     [ApiController]
     public class InternWorkingHourController : ControllerBase
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly InternDbContext internDbContext;
 
         public InternWorkingHourController(InternDbContext internDbContext)
@@ -26,6 +27,7 @@ namespace InternManagementSystem.Controllers
         public async Task<ActionResult<IEnumerable<InternWorkingHour>>> GetInternWorkingHour()
         {
             var allRecords = await internDbContext.InternWorkingHour.ToListAsync();
+            log.Info("All Intern WorkingHour Details Displayed Successfully");
             return allRecords;
         }
 
@@ -39,11 +41,14 @@ namespace InternManagementSystem.Controllers
 
                 if (internWorkingHour != null)
                 {
+                    log.Info("Intern WorkingHour Details By id Displayed Successfully");
+
                     return internWorkingHour;
                 }
                 else
                 {
-                    return NotFound("Intern working Hour Details Not Found with Entered Id" + id);
+
+                    return NotFound("Intern working Hour Details Not Found with Entered Id: " + id);
                 }
             }
             catch (Exception)
@@ -61,6 +66,7 @@ namespace InternManagementSystem.Controllers
         {
             internDbContext.InternWorkingHour.Add(internWorkingHour);
             await internDbContext.SaveChangesAsync();
+            log.Info("Intern WorkingHour Details Posted Successfully");
 
             return CreatedAtAction("GetInternWorkingHour", new { InternId = internWorkingHour.SNo }, internWorkingHour);
         }
@@ -79,6 +85,7 @@ namespace InternManagementSystem.Controllers
                     updateWorkingHour.InternMonthlyWorkingHours = UpdateInternWorkingHour.InternMonthlyWorkingHours;
 
                     await internDbContext.SaveChangesAsync();
+                    log.Info("Intern WorkingHour Details By id Updated Successfully");
 
                     return Ok("Intern Working Hour Details Updated with id: " + id);
                 }
@@ -105,12 +112,15 @@ namespace InternManagementSystem.Controllers
                 {
                     internDbContext.InternWorkingHour.Remove(internWorkingHour);
                     await internDbContext.SaveChangesAsync();
+                    log.Info("Intern WorkingHour Details By id Deleted Successfully");
 
                     return internWorkingHour;
                 }
                 else
                 {
-                    return NotFound("Intern Working Hour Details Not Found With InternId" + id);
+                    log.Info("Intern WorkingHour Details By id Not Deleted  Successfully");
+
+                    return NotFound("Intern Working Hour Details Not Found With InternId: " + id);
                 }
             }
             catch (Exception)
